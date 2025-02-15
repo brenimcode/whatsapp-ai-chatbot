@@ -12,10 +12,9 @@ This conversational agent leverages **Artificial Intelligence (AI)**, **RAG (Ret
 ![Groq](https://img.shields.io/badge/Groq-FF6347?logo=groq&logoColor=white&style=for-the-badge)
 ![DeepSeek](https://img.shields.io/badge/DeepSeek-4b6bfc?style=for-the-badge&logoColor=FFFFFF)
 
-![Diagram](https://github.com/user-attachments/assets/5ae451b7-10f3-494c-a175-89ce56cc5b31)
-
-
 ## System Overview
+
+![Diagram](https://github.com/user-attachments/assets/010a0461-7b5c-4239-a492-9037ea33e792)
 
 This system employs **RAG (Retrieval-Augmented Generation)** to generate responses from various document formats (PDF, images, text, etc.), utilizing a **vector database** to fetch relevant information dynamically. This ensures responses that are more **coherent, concise, and less prone to hallucinations**—a common issue in LLMs.
 
