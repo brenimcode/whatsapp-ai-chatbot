@@ -1,0 +1,10 @@
+fastapi==0.115.8
+langchain==0.3.18
+langchain_chroma==0.2.2
+langchain_community==0.3.17
+langchain_core==0.3.35
+langchain_groq==0.2.4
+langchain_huggingface==0.1.2
+python-decouple==3.8
+Requests==2.32.3
+uvicorn==0.34.0

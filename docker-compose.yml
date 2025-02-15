@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  waha:
+    image: devlikeapro/waha:latest
+    container_name: wpp_bot_waha
+    restart: always
+    ports:
+      - "3000:3000"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: wpp_bot_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./chroma_data:/app/chroma_data
