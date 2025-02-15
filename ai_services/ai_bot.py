@@ -1,4 +1,5 @@
 import os
+import re
 from decouple import config
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_chroma import Chroma
@@ -21,7 +22,7 @@ class AIBot:
         """
         Initializes the AIBot with a chat model and a retriever.
         """
-        self.__chat = ChatGroq(model='deepseek-r1-distill-llama-70b', temperature=0.2)
+        self.__chat = ChatGroq(model='llama-3.3-70b-specdec', temperature=0.2)
         self.__retriever = self.__build_retriever()
 
     def __build_retriever(self):
@@ -61,11 +62,16 @@ class AIBot:
         - Be clear and objective, always providing the best possible experience for the customer.
         - Maintain a relaxed and friendly tone, as if you were talking to a friend.
         - If you have doubts or don’t know the answer, politely say you don’t know.
+        - Always respond as a conversation. Don't start the conversation by agreeing. Start the conversation by talking.
+        - Never use text formatting like bold, italics, or #, as this is a plain text conversation, similar to a .txt file, not a Markdown document.
         
         Example of Interaction:
 
         Q: Oi, a barbearia está aberta?  
-        A: E aí, tranquilo? Estamos abertos sim! Funcionamos de segunda a sábado, das 7h às 20h. Se precisar de mais alguma coisa, estou por aqui!
+        A: E aí, tranquilo? Estamos abertos sim! Funcionamos de segunda a sábado, das 7h às 20h. Mais alguma duvida!?
+
+        Q: Opa, tudo bem? Quanto custa o corte de vocês?  
+        A: E aí, tranquilo? O corte masculino custa R$ 30,00 e o corte feminino R$ 40. Se precisar de algo mais, estou aqui!
 
         Q: {Question}
         A: 
@@ -78,8 +84,8 @@ class AIBot:
         # Create a prompt template for the chat model
         question_answering_prompt = ChatPromptTemplate.from_messages(
             [
-            ('system', SYSTEM_TEMPLATE),
-            MessagesPlaceholder(variable_name='messages'),
+                ('system', "Based on the following context:\n\n{context}\n\n" + SYSTEM_TEMPLATE),
+                MessagesPlaceholder(variable_name='messages'),
             ]
         )
 
@@ -93,6 +99,9 @@ class AIBot:
             'messages': self.__build_messages(history_messages, question),
             }
         )
+
+        # response = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL)
+        response = re.sub(r"\n+", " ", response).strip()
 
         return response
 
